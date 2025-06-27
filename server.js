@@ -31,16 +31,16 @@ const storage = multer.diskStorage({
 const upload = multer({ 
   storage,
   fileFilter: (req, file, cb) => {
-    const allowedTypes = ['.pdf', '.docx', '.txt'];
+    const allowedTypes = ['.pdf', '.docx', '.txt', '.csv', '.xlsx', '.xls'];
     const ext = path.extname(file.originalname).toLowerCase();
     if (allowedTypes.includes(ext)) {
       cb(null, true);
     } else {
-      cb(new Error('Only PDF, DOCX, and TXT files are allowed'));
+      cb(new Error('Only PDF, DOCX, TXT, CSV, and Excel files are allowed'));
     }
   },
   limits: {
-    fileSize: 10 * 1024 * 1024 // 10MB limit
+    fileSize: 100 * 1024 * 1024 // 100MB limit for large files
   }
 });
 
