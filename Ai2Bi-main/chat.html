@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ai2Bi Platform - Chat Interface</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css" rel="stylesheet" />
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="assets/datacentrix-logo.png" alt="Datacentrix Logo">
+                </a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="chat.html" class="active">Chat Interface</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="chat-hero">
+        <div class="container">
+            <div class="chat-hero-content">
+                <h1>Ai2Bi <span class="highlight">Intelligence Hub</span></h1>
+                <p>Ask questions about your data and visualize insights through interactive dashboards</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="chat-section">
+        <div class="container">
+            <div class="main-container">
+                <!-- Tab Navigation -->
+                <div class="dashboard-tabs">
+                    <button class="tab-button active" onclick="switchTab(event, 'chat-tab')">
+                        <i class="fas fa-comments"></i> Chat Interface
+                    </button>
+                    <button class="tab-button" onclick="switchTab(event, 'dashboard-tab')">
+                        <i class="fas fa-chart-bar"></i> Dashboard
+                    </button>
+                </div>
+
+                <!-- Chat Tab Content -->
+                <div id="chat-tab" class="tab-content active">
+                    <!-- <div class="chart-warning-banner">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <p>Important: When creating charts, metrics and columns parameters may not persist. Please manually insert these values and save your charts to the dashboard.</p>
+                    </div> -->
+                    
+                    <div class="chat-container-updated">
+                        <div class="chat-sidebar">
+                            <div class="sidebar-header">
+                                <h3>Ai2Bi Assistant</h3>
+                            </div>
+                            <div class="sidebar-content">
+                                <div class="sidebar-section">
+                                    <h4>Sample Questions</h4>
+                                    <ul class="sample-questions">
+                                        <li><button class="question-btn">What are the key metrics from our Q1 sales data?</button></li>
+                                        <li><button class="question-btn">Show me contract renewal dates for next month</button></li>
+                                        <li><button class="question-btn">Create a sales trend chart for the past 6 months</button></li>
+                                        <li><button class="question-btn">Summarize our customer feedback from last quarter</button></li>
+                                    </ul>
+                                </div>
+                                <div class="sidebar-section">
+                                    <h4>Capabilities</h4>
+                                    <ul class="capabilities-list">
+                                        <li><i class="fas fa-search"></i> Query and search across all your documents</li>
+                                        <li><i class="fas fa-chart-pie"></i> Generate visual dashboards</li>
+                                        <li><i class="fas fa-file-download"></i> Download reports as PDF/PNG</li>
+                                        <li><i class="fas fa-magic"></i> Get AI-powered insights</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="chat-main">
+                            <div id="n8n-chat" class="chat-embed"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dashboard Tab Content -->
+                <div id="dashboard-tab" class="tab-content">
+                    <div class="dashboard-info">
+                        <i class="fas fa-info-circle"></i>
+                        <div class="dashboard-info-content">
+                            <h4>Interactive Business Intelligence Dashboard</h4>
+                            <p>View and interact with your data visualizations created through the chat interface. Charts and insights generated from your queries will appear here for deeper analysis and exploration.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="dashboard-main">
+                        <iframe 
+                        class="dashboard-embed" 
+                        src="https://disputes-pubmed-quotes-mood.trycloudflare.com/embed/dashboard/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyZXNvdXJjZSI6eyJkYXNoYm9hcmQiOjZ9LCJwYXJhbXMiOnt9LCJleHAiOjE3NDgyNjQwNzJ9.vsmwHlHe_bSIk8JFUHYRIdUH6jjwnZ1_IJ__9MrKLoo#bordered=true&titled=true" 
+                        frameborder="0" 
+                        allowtransparency="true" 
+                        allowfullscreen="true"
+                        style="width: 100%; height: 800px; border: none;">
+                         </iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="info-section">
+        <div class="container">
+            <div class="info-grid">
+                <div class="info-card">
+                    <div class="info-icon">
+                        <i class="fas fa-comments-dollar"></i>
+                    </div>
+                    <h3>Business Intelligence</h3>
+                    <p>Transform complex data into actionable business insights through natural language queries</p>
+                </div>
+                <div class="info-card">
+                    <div class="info-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3>AI-Powered Analysis</h3>
+                    <p>Leveraging RAG (Retrieval-Augmented Generation) for context-aware and accurate responses</p>
+                </div>
+                <div class="info-card">
+                    <div class="info-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Real-time Visualization</h3>
+                    <p>See your data come to life with dynamic, interactive dashboards and visual reports</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="assets/datacentrix-logo.png" alt="Datacentrix Logo">
+                    <p>Ai2Bi Platform - Part of Datacentrix AI Resource Center (ARC)</p>
+                </div>
+                <div class="footer-links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="chat.html">Chat Interface</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h3>Contact</h3>
+                    <p>Email: arc@datacentrix.co.za</p>
+                    <p>Copyright © 2025 Datacentrix ARC</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Chat help button -->
+    <button id="chat-help-button" aria-label="Chat help menu">
+        <i class="fas fa-question-circle"></i>
+    </button>
+
+    <!-- Chat help popup -->
+    <div id="chat-help-popup">
+        <strong>What I can help with:</strong>
+        <ul>
+            <li><i class="fas fa-search"></i>Search through your documents</li>
+            <li><i class="fas fa-chart-bar"></i>Create visualizations from your data</li>
+            <li><i class="fas fa-download"></i>Download reports and insights</li>
+            <li><i class="fas fa-question-circle"></i>Answer questions about your business data</li>
+        </ul>
+    </div>
+
+    <script type="module">
+        import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
+        
+        createChat({
+            mode: 'fullscreen',
+            webhookUrl: 'https://kkarodia.app.n8n.cloud/webhook/7c089ff0-3fd4-4b5f-bb76-eff2d51345de/chat',
+            i18n: {
+                en: {
+                    title: 'Welcome to Ai2Bi Chat 👋',
+                    subtitle: "Making business intelligence conversational. Start with a question, end with actionable insights",
+                }
+            },
+            initialMessages: [
+                'Not sure where to begin? Press the question icon in the bottom right to see the things I can help with:',
+            ],
+        });
+
+        // Sample questions functionality
+        document.querySelectorAll('.question-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                // Create a custom event to send the question to the chat
+                const questionText = this.textContent.replace(/"/g, '');
+                
+                // Create an input event to simulate typing
+                const chatInput = document.querySelector('.n8n-chat-input');
+                if (chatInput) {
+                    chatInput.value = questionText;
+                    chatInput.dispatchEvent(new Event('input', { bubbles: true }));
+                    
+                    // Simulate pressing Enter after a short delay
+                    setTimeout(() => {
+                        chatInput.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }));
+                    }, 100);
+                } else {
+                    console.log('Chat input not found. Question: ' + questionText);
+                }
+            });
+        });
+
+        // Help button functionality
+        const helpBtn = document.getElementById('chat-help-button');
+        const helpPopup = document.getElementById('chat-help-popup');
+
+        helpBtn.addEventListener('click', () => {
+            const isVisible = helpPopup.style.display === 'block';
+            helpPopup.style.display = isVisible ? 'none' : 'block';
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!helpPopup.contains(e.target) && !helpBtn.contains(e.target)) {
+                helpPopup.style.display = 'none';
+            }
+        });
+    </script>
+
+    <script>
+        // Tab switching functionality
+        function switchTab(event, tabName) {
+            // Hide all tab content
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(content => {
+                content.classList.remove('active');
+            });
+
+            // Remove active class from all tab buttons
+            const tabButtons = document.querySelectorAll('.tab-button');
+            tabButtons.forEach(button => {
+                button.classList.remove('active');
+            });
+
+            // Show selected tab content and mark button as active
+            document.getElementById(tabName).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+
+        // Function to embed Metabase dashboard (call this when you have the URL)
+        function embedMetabaseDashboard(dashboardUrl) {
+            const dashboardContent = document.getElementById('dashboard-content');
+            dashboardContent.innerHTML = `
+                <iframe 
+                    class="dashboard-embed" 
+                    src="${dashboardUrl}"
+                    frameborder="0"
+                    allowtransparency="true"
+                    allowfullscreen="true">
+                </iframe>
+            `;
+        }
+    </script>
+</body>
+</html>

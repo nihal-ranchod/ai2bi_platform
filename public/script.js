@@ -3,6 +3,7 @@ class RAGInterface {
         this.initializeElements();
         this.attachEventListeners();
         this.loadStats();
+        this.initializeNavigation();
     }
 
     initializeElements() {
@@ -25,6 +26,32 @@ class RAGInterface {
         this.analysisModal = document.getElementById('analysisModal');
         this.analysisContent = document.getElementById('analysisContent');
         this.closeModal = document.getElementById('closeModal');
+        
+        // UI sections
+        this.chatInterface = document.getElementById('chat-interface');
+        this.homeSection = document.querySelector('.hero');
+        this.featuresSection = document.querySelector('.features');
+        this.uploadSection = document.querySelector('.upload-section');
+        this.processSection = document.querySelector('.process-section');
+        this.footer = document.querySelector('footer');
+    }
+
+    initializeNavigation() {
+        // Set up smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#chat-interface') {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                }
+            });
+        });
     }
 
     attachEventListeners() {
@@ -59,6 +86,19 @@ class RAGInterface {
             if (e.target === this.analysisModal) {
                 this.analysisModal.style.display = 'none';
             }
+        });
+
+        // Add sample question functionality
+        this.attachSampleQuestionListeners();
+    }
+
+    attachSampleQuestionListeners() {
+        document.querySelectorAll('.question-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const questionText = button.textContent.trim();
+                this.queryInput.value = questionText;
+                this.queryInput.focus();
+            });
         });
     }
 
@@ -167,7 +207,7 @@ class RAGInterface {
             this.hideTypingIndicator();
 
             if (response.ok) {
-                this.addMessage(result.response, 'bot', result.sources);
+                this.addMessage(result.response, 'bot', result.sources, result.dataInfo);
             } else {
                 throw new Error(result.error);
             }
@@ -235,22 +275,30 @@ class RAGInterface {
         this.analysisModal.style.display = 'block';
     }
 
-    addMessage(content, type, sources = null) {
+    addMessage(content, type, sources = null, dataInfo = null) {
         const messageDiv = document.createElement('div');
         messageDiv.className = `message ${type}-message`;
 
         const avatar = type === 'bot' ? 'fa-robot' : 'fa-user';
+        
+        // Process markdown content for better display
+        const processedContent = this.processMarkdown(content);
         
         let sourcesHtml = '';
         if (sources && sources.length > 0) {
             sourcesHtml = `
                 <div class="sources">
                     <h4><i class="fas fa-bookmark"></i> Sources (${sources.length}):</h4>
-                    ${sources.map(source => 
-                        `<div class="source-item">
-                            ${source.filename} (chunk ${source.chunk_index}, similarity: ${(source.similarity * 100).toFixed(1)}%)
-                        </div>`
-                    ).join('')}
+                    ${sources.map(source => {
+                        let sourceInfo = `${source.filename} (chunk ${source.chunk_index}, similarity: ${(source.similarity * 100).toFixed(1)}%)`;
+                        if (source.file_type) {
+                            sourceInfo += ` - ${source.file_type.toUpperCase()}`;
+                        }
+                        if (source.chunk_type) {
+                            sourceInfo += ` (${source.chunk_type})`;
+                        }
+                        return `<div class="source-item">${sourceInfo}</div>`;
+                    }).join('')}
                 </div>
             `;
         }
@@ -260,13 +308,100 @@ class RAGInterface {
                 <i class="fas ${avatar}"></i>
             </div>
             <div class="message-content">
-                <p>${content}</p>
+                ${processedContent}
                 ${sourcesHtml}
             </div>
         `;
 
         this.chatMessages.appendChild(messageDiv);
         this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
+    }
+
+    processMarkdown(content) {
+        // Simple markdown processing for better display
+        let processed = content;
+        
+        // Headers
+        processed = processed.replace(/^### (.*$)/gim, '<h3>$1</h3>');
+        processed = processed.replace(/^## (.*$)/gim, '<h2>$1</h2>');
+        processed = processed.replace(/^# (.*$)/gim, '<h1>$1</h1>');
+        
+        // Bold text
+        processed = processed.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        
+        // Italic text
+        processed = processed.replace(/\*(.*?)\*/g, '<em>$1</em>');
+        
+        // Lists
+        processed = processed.replace(/^\* (.+)$/gm, '<li>$1</li>');
+        processed = processed.replace(/(<li>.*<\/li>)/s, '<ul>$1</ul>');
+        
+        // Tables (basic support)
+        const lines = processed.split('\n');
+        let inTable = false;
+        let tableLines = [];
+        let result = [];
+        
+        for (let line of lines) {
+            if (line.includes('|') && line.trim() !== '') {
+                if (!inTable) {
+                    inTable = true;
+                    tableLines = [];
+                }
+                tableLines.push(line);
+            } else {
+                if (inTable) {
+                    result.push(this.createTable(tableLines));
+                    inTable = false;
+                }
+                result.push(line);
+            }
+        }
+        
+        if (inTable) {
+            result.push(this.createTable(tableLines));
+        }
+        
+        processed = result.join('\n');
+        
+        // Convert newlines to paragraphs
+        processed = processed.replace(/\n\n/g, '</p><p>');
+        processed = `<p>${processed}</p>`;
+        
+        // Clean up empty paragraphs
+        processed = processed.replace(/<p><\/p>/g, '');
+        processed = processed.replace(/<p>\s*<\/p>/g, '');
+        
+        return processed;
+    }
+
+    createTable(lines) {
+        if (lines.length < 2) return lines.join('\n');
+        
+        let table = '<table>';
+        
+        // Header row
+        const headerCells = lines[0].split('|').map(cell => cell.trim()).filter(cell => cell !== '');
+        table += '<tr>';
+        headerCells.forEach(cell => {
+            table += `<th>${cell}</th>`;
+        });
+        table += '</tr>';
+        
+        // Data rows (skip separator line)
+        for (let i = 2; i < lines.length; i++) {
+            const cells = lines[i].split('|').map(cell => cell.trim()).filter(cell => cell !== '');
+            if (cells.length > 0) {
+                table += '<tr>';
+                cells.forEach(cell => {
+                    table += `<td>${cell}</td>`;
+                });
+                table += '</tr>';
+            }
+        }
+        
+        table += '</table>';
+        return table;
     }
 
     showTypingIndicator() {
@@ -338,6 +473,73 @@ class RAGInterface {
         } catch (error) {
             console.error('Error loading stats:', error);
         }
+    }
+}
+
+// Navigation functions
+function showChatInterface() {
+    // Hide home sections
+    const homeSections = [
+        document.querySelector('.hero'),
+        document.querySelector('.features'),
+        document.querySelector('.upload-section'),
+        document.querySelector('.process-section')
+    ];
+    
+    homeSections.forEach(section => {
+        if (section) section.style.display = 'none';
+    });
+    
+    // Show chat interface
+    const chatInterface = document.getElementById('chat-interface');
+    if (chatInterface) {
+        chatInterface.style.display = 'block';
+        // Scroll to top
+        window.scrollTo(0, 0);
+    }
+    
+    // Update nav links
+    updateNavLinks('chat');
+}
+
+function showHomePage() {
+    // Show home sections
+    const homeSections = [
+        document.querySelector('.hero'),
+        document.querySelector('.features'),
+        document.querySelector('.upload-section'),
+        document.querySelector('.process-section')
+    ];
+    
+    homeSections.forEach(section => {
+        if (section) section.style.display = 'block';
+    });
+    
+    // Hide chat interface
+    const chatInterface = document.getElementById('chat-interface');
+    if (chatInterface) {
+        chatInterface.style.display = 'none';
+    }
+    
+    // Update nav links
+    updateNavLinks('home');
+    
+    // Scroll to top
+    window.scrollTo(0, 0);
+}
+
+function updateNavLinks(currentPage) {
+    const navLinks = document.querySelectorAll('.nav-links a');
+    navLinks.forEach(link => {
+        link.classList.remove('active');
+    });
+    
+    if (currentPage === 'home') {
+        const homeLink = document.querySelector('.nav-links a[href="index.html"]');
+        if (homeLink) homeLink.classList.add('active');
+    } else if (currentPage === 'chat') {
+        const chatLink = document.querySelector('.nav-links a[href="#chat-interface"]');
+        if (chatLink) chatLink.classList.add('active');
     }
 }
 

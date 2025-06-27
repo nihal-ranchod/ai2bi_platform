@@ -3,30 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RAG AI Agent</title>
+    <title>Ai2Bi Platform - Home</title>
     <link rel="stylesheet" href="styles.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    <div class="container">
-        <header class="header">
-            <h1><i class="fas fa-robot"></i> RAG AI Agent</h1>
-            <p>Intelligent document Q&A powered by OpenAI GPT-4o-mini and Supabase</p>
-        </header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="datacentrix-logo.png" alt="Datacentrix Logo">
+                </a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="#chat-interface" onclick="showChatInterface()">Chat Interface</a></li>
+            </ul>
+        </div>
+    </nav>
 
-        <div class="main-content">
-            <div class="sidebar">
-                <div class="upload-section">
-                    <h3><i class="fas fa-upload"></i> Upload Documents</h3>
-                    <div class="upload-area" id="uploadArea">
-                        <div class="upload-icon">
-                            <i class="fas fa-cloud-upload-alt"></i>
-                        </div>
-                        <p>Drop files here or click to browse</p>
-                        <p class="upload-hint">Supported: PDF, DOCX, TXT (max 10MB)</p>
-                        <input type="file" id="fileInput" accept=".pdf,.docx,.txt" multiple>
+    <header class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Welcome to <span class="highlight">Ai2Bi</span> Platform</h1>
+                <p>Transform your business data into actionable insights through the power of AI</p>
+                <a href="#upload-section" class="btn btn-primary">Upload Documents</a>
+                <a href="#chat-interface" onclick="showChatInterface()" class="btn btn-secondary">Start Chatting</a>
+            </div>
+        </div>
+    </header>
+
+    <section class="features">
+        <div class="container">
+            <h2>What You Can Do With Ai2Bi</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-comments"></i>
                     </div>
-                    <div class="upload-progress" id="uploadProgress"></div>
+                    <h3>Conversational Data</h3>
+                    <p>Leverage LLMs & Gen-AI for human-like interactions, faster data understanding, and seamless query generation.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3>Accelerated Response</h3>
+                    <p>Address inquiries, resolve issues, and execute tasks promptly with real-time response generation.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <h3>Data Visualization</h3>
+                    <p>Build real-time visual dashboards and graphical reports from natural language queries.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="upload-section" class="upload-section">
+        <div class="container">
+            <div class="upload-container">
+                <h2>Upload Your Company Documents</h2>
+                <p>Upload your data files (Word, Excel, PDF, CSV, TXT) to start generating insights</p>
+                
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-icon">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                    </div>
+                    <p>Drop files here or click to browse</p>
+                    <p class="upload-hint">Supported formats: PDF, DOCX, TXT, CSV, Excel (max 100MB)</p>
+                    <input type="file" id="fileInput" accept=".pdf,.docx,.txt,.csv,.xlsx,.xls" multiple>
+                </div>
+                <div class="upload-progress" id="uploadProgress"></div>
+                
+                <div class="supported-formats">
+                    <h3>Supported File Formats</h3>
+                    <div class="format-icons">
+                        <span class="format"><i class="fas fa-file-word"></i> Word</span>
+                        <span class="format"><i class="fas fa-file-excel"></i> Excel</span>
+                        <span class="format"><i class="fas fa-file-pdf"></i> PDF</span>
+                        <span class="format"><i class="fas fa-file-csv"></i> CSV</span>
+                        <span class="format"><i class="fas fa-file-alt"></i> TXT</span>
+                    </div>
                 </div>
 
                 <div class="stats-section">
@@ -39,71 +99,163 @@
                         <i class="fas fa-trash"></i> Clear All
                     </button>
                 </div>
+            </div>
+        </div>
+    </section>
 
-                <div class="settings-section">
-                    <h3><i class="fas fa-cogs"></i> Settings</h3>
-                    <div class="setting-item">
-                        <label for="temperature">Temperature:</label>
-                        <input type="range" id="temperature" min="0" max="1" step="0.1" value="0.7">
-                        <span id="tempValue">0.7</span>
-                    </div>
-                    <div class="setting-item">
-                        <label for="maxTokens">Max Tokens:</label>
-                        <input type="number" id="maxTokens" min="100" max="2000" value="1000">
-                    </div>
-                    <div class="setting-item">
-                        <label for="retrievalLimit">Retrieval Limit:</label>
-                        <input type="number" id="retrievalLimit" min="1" max="10" value="5">
-                    </div>
-                    <div class="setting-item">
-                        <label for="similarityThreshold">Similarity Threshold:</label>
-                        <input type="range" id="similarityThreshold" min="0" max="1" step="0.1" value="0.3">
-                        <span id="thresholdValue">0.3</span>
-                    </div>
+    <section class="process-section">
+        <div class="container">
+            <h2>How It Works</h2>
+            <div class="process-steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>Upload Data</h3>
+                    <p>Upload your business documents through our secure platform</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>AI Processing</h3>
+                    <p>Our ETL pipeline cleans and processes your data</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>Ask Questions</h3>
+                    <p>Use natural language to query your data through our Chat Interface</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <h3>Get Insights</h3>
+                    <p>Receive visualizations and actionable insights you can download</p>
                 </div>
             </div>
+        </div>
+    </section>
 
-            <div class="chat-section">
-                <div class="chat-container">
-                    <div class="chat-messages" id="chatMessages">
-                        <div class="message bot-message">
-                            <div class="message-avatar">
-                                <i class="fas fa-robot"></i>
+    <!-- Chat Interface Section (Hidden by default) -->
+    <section id="chat-interface" class="chat-section" style="display: none;">
+        <div class="container">
+            <div class="chat-hero-content">
+                <h1>Ai2Bi <span class="highlight">Intelligence Hub</span></h1>
+                <p>Ask questions about your data and visualize insights through interactive dashboards</p>
+            </div>
+            
+            <div class="main-container">
+                <!-- Chat Interface -->
+                <div class="chat-container-updated">
+                    <div class="chat-sidebar">
+                        <div class="sidebar-header">
+                            <h3>Ai2Bi Assistant</h3>
+                        </div>
+                        <div class="sidebar-content">
+                            <div class="sidebar-section">
+                                <h4>Model Settings</h4>
+                                <div class="setting-item">
+                                    <label for="temperature">Temperature:</label>
+                                    <input type="range" id="temperature" min="0" max="1" step="0.1" value="0.7">
+                                    <span id="tempValue">0.7</span>
+                                </div>
+                                <div class="setting-item">
+                                    <label for="maxTokens">Max Tokens:</label>
+                                    <input type="number" id="maxTokens" min="100" max="2000" value="1000">
+                                </div>
+                                <div class="setting-item">
+                                    <label for="retrievalLimit">Retrieval Limit:</label>
+                                    <input type="number" id="retrievalLimit" min="1" max="10" value="5">
+                                </div>
+                                <div class="setting-item">
+                                    <label for="similarityThreshold">Similarity Threshold:</label>
+                                    <input type="range" id="similarityThreshold" min="0" max="1" step="0.1" value="0.3">
+                                    <span id="thresholdValue">0.3</span>
+                                </div>
                             </div>
-                            <div class="message-content">
-                                <p>Hello! I'm your RAG AI Agent. Upload some documents and start asking questions!</p>
+                            <div class="sidebar-section">
+                                <h4>Sample Questions</h4>
+                                <ul class="sample-questions">
+                                    <li><button class="question-btn">What are the key metrics from our Q1 sales data?</button></li>
+                                    <li><button class="question-btn">Show me contract renewal dates for next month</button></li>
+                                    <li><button class="question-btn">Create a sales trend chart for the past 6 months</button></li>
+                                    <li><button class="question-btn">Summarize our customer feedback from last quarter</button></li>
+                                </ul>
+                            </div>
+                            <div class="sidebar-section">
+                                <h4>Capabilities</h4>
+                                <ul class="capabilities-list">
+                                    <li><i class="fas fa-search"></i> Query and search across all your documents</li>
+                                    <li><i class="fas fa-chart-pie"></i> Generate visual dashboards</li>
+                                    <li><i class="fas fa-file-download"></i> Download reports as PDF/PNG</li>
+                                    <li><i class="fas fa-magic"></i> Get AI-powered insights</li>
+                                </ul>
                             </div>
                         </div>
                     </div>
                     
-                    <div class="chat-input-container">
-                        <div class="input-group">
-                            <input type="text" id="queryInput" placeholder="Ask a question about your documents..." maxlength="500">
-                            <button id="sendBtn" class="btn btn-primary">
-                                <i class="fas fa-paper-plane"></i>
-                            </button>
+                    <div class="chat-main">
+                        <div class="chat-messages" id="chatMessages">
+                            <div class="message bot-message">
+                                <div class="message-avatar">
+                                    <i class="fas fa-robot"></i>
+                                </div>
+                                <div class="message-content">
+                                    <p>Hello! I'm your Ai2Bi Assistant. Upload some documents and start asking questions!</p>
+                                </div>
+                            </div>
                         </div>
-                        <div class="input-actions">
-                            <button id="analyzeBtn" class="btn btn-secondary">
-                                <i class="fas fa-search"></i> Analyze Query
-                            </button>
-                            <button id="clearChatBtn" class="btn btn-secondary">
-                                <i class="fas fa-broom"></i> Clear Chat
-                            </button>
+                        
+                        <div class="chat-input-container">
+                            <div class="input-group">
+                                <input type="text" id="queryInput" placeholder="Ask a question about your documents..." maxlength="500">
+                                <button id="sendBtn" class="btn btn-primary">
+                                    <i class="fas fa-paper-plane"></i>
+                                </button>
+                            </div>
+                            <div class="input-actions">
+                                <button id="analyzeBtn" class="btn btn-secondary">
+                                    <i class="fas fa-search"></i> Analyze Query
+                                </button>
+                                <button id="clearChatBtn" class="btn btn-secondary">
+                                    <i class="fas fa-broom"></i> Clear Chat
+                                </button>
+                                <button onclick="showHomePage()" class="btn btn-secondary">
+                                    <i class="fas fa-home"></i> Back to Home
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </section>
 
-        <div class="modal" id="analysisModal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3>Query Analysis</h3>
-                    <button class="modal-close" id="closeModal">&times;</button>
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="datacentrix-logo.png" alt="Datacentrix Logo">
+                    <p>Ai2Bi Platform - Part of Datacentrix AI Resource Center (ARC)</p>
                 </div>
-                <div class="modal-body" id="analysisContent">
+                <div class="footer-links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#" onclick="showHomePage()">Home</a></li>
+                        <li><a href="#" onclick="showChatInterface()">Chat Interface</a></li>
+                    </ul>
                 </div>
+                <div class="footer-contact">
+                    <h3>Contact</h3>
+                    <p>Email: arc@datacentrix.co.za</p>
+                    <p>Copyright © 2025 Datacentrix ARC</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <div class="modal" id="analysisModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Query Analysis</h3>
+                <button class="modal-close" id="closeModal">&times;</button>
+            </div>
+            <div class="modal-body" id="analysisContent">
             </div>
         </div>
     </div>
